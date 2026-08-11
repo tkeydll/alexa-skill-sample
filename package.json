@@ -9,9 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "alexa-sdk": "^1.0.25"
-  },
-  "overrides": {
-    "aws-sdk": "^2.1693.0"
+    "ask-sdk-core": "^2.14.0"
   }
 }
