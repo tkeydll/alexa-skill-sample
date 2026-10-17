@@ -1,25 +1,19 @@
-const Alexa = require('alexa-sdk');
-exports.handler = function(event, context, callback) {
-    let alexa = Alexa.handler(event, context);
-    alexa.appId = process.env.ALEXA_APPLICATION_ID;
-    alexa.resources = languageStrings;
-    alexa.registerHandlers(handlers);
-    alexa.execute();
-};
- 
-const languageStrings = {
-  'ja-JP': {
-    'translation': {
-      'HELLO' : 'こんにちは',
-      'REPROMPT' : '何か話しかけてください',
-      'CANCEL' : 'キャンセルしました',
-      'UNKNOWN' : '知らねーよ'
+const Alexa = require('ask-sdk-core');
+
+const UNKNOWN_MESSAGE = '知らねーよ';
+
+const UnhandledRequestHandler = {
+    canHandle() {
+        return true;
+    },
+    handle(handlerInput) {
+        return handlerInput.responseBuilder
+            .speak(UNKNOWN_MESSAGE)
+            .getResponse();
     }
-  }
 };
- 
-var handlers = {
-    'Unhandled': function () {
-        this.emit(':tell', this.t("UNKNOWN"));
-    }
-};  
+
+exports.handler = Alexa.SkillBuilders.custom()
+    .addRequestHandlers(UnhandledRequestHandler)
+    .withSkillId(process.env.ALEXA_APPLICATION_ID)
+    .lambda();
